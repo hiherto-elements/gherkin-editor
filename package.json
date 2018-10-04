@@ -1,0 +1,18 @@
+{
+  "name": "gherkin-editor",
+  "description": "Interactive Gherkin Editor",
+  "dependencies": {
+    "@granite-elements/ace-widget": "^2.2.7-b1",
+    "@hiherto-elements/gherkin": "0.0.1",
+    "@polymer/app-layout": "^3.0.1",
+    "@polymer/paper-icon-button": "^3.0.1",
+    "@polymer/paper-input": "^3.0.1",
+    "@polymer/paper-progress": "^3.0.1",
+    "@polymer/polymer": "^3.0.0",
+    "monaco-editor": "^0.14.3"
+  },
+  "devDependencies": {
+    "@webcomponents/webcomponentsjs": "^2.0.0",
+    "wct-browser-legacy": "^1.0.0"
+  }
+}
