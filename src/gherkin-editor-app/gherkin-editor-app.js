@@ -16,7 +16,8 @@ import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@granite-elements/ace-widget/ace-widget.js'
 
 // gherkin parser
-import { parse } from '@hiherto-elements/gherkin/parse.js'
+import { parse } from '@hiherto-elements/gherkin/parse.js'; 
+import { stats } from '@hiherto-elements/gherkin/stats.js';
 
 let DEFAULT_FEATURE = `Feature: Can drink beer when thirsty
 As a drinker
@@ -63,8 +64,7 @@ class GherkinEditorApp extends PolymerElement {
         <app-header slot="header" reveals effects="waterfall">
           <app-toolbar>
             <div main-title>Gherkin Editor</div>           
-            <paper-button>Features {{_countFeatures(parsedFeature)}}</paper-button>
-          <paper-button>Scenarios {{_countScenarios(parsedFeature)}}</paper-button>           
+            <paper-button>Score {{featureStats.score}}</paper-button> 
           </app-toolbar>
         </app-header>
         <ace-widget id="editor" placeholder="{{featureText}}" on-editor-content="{{changeContent}}">{{featureText}}</ace-widget>
@@ -72,33 +72,24 @@ class GherkinEditorApp extends PolymerElement {
     `;
   }
 
-
-  _countFeatures(parsedFeature) {
-    if (!parsedFeature) {
-      return;
-    }
-    return parsedFeature.length;
-  }
-
-  _countScenarios(parsedFeature) {
-    
-    if (!parsedFeature) {
-      return;
-    }
-    const add = (a, b) => a + b;
-    
-    return parsedFeature.map(feature => feature.scenarios.length).reduce(add);
-  }
-
-
   changeFeature() {
     this.parsedFeature = parse(this.featureText);
+    this.featureStats = stats(this.parsedFeature);
   }
+
   static get properties() {
     return {
       parsedFeature: {
         type: Object,
         observer: 'changeParsed',
+      },
+      featureStats: {
+        type: Object,
+        value: ()=>{
+          return {
+        
+          }
+        }
       },
       featureText: {
         type: String,
