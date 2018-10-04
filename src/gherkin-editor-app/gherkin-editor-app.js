@@ -11,6 +11,7 @@ import '@polymer/paper-progress/paper-progress.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-icons/social-icons.js';
+import '@polymer/iron-icons/editor-icons.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@granite-elements/ace-widget/ace-widget.js'
@@ -45,7 +46,6 @@ class GherkinEditorApp extends PolymerElement {
     })
   }
 
-
   static get template() {
     return html`
  <style>
@@ -63,7 +63,10 @@ class GherkinEditorApp extends PolymerElement {
       <app-header-layout>
         <app-header slot="header" reveals effects="waterfall">
           <app-toolbar>
-            <div main-title>Gherkin Editor</div>           
+            <div main-title>Gherkin Editor</div>
+            <paper-icon-button icon="icons:help"></paper-icon-button>
+            <paper-icon-button icon="icons:hourglass-full"></paper-icon-button>
+            <paper-icon-button icon="social:share"></paper-icon-button>
             <paper-button>Score {{featureStats.score}}</paper-button> 
           </app-toolbar>
         </app-header>
