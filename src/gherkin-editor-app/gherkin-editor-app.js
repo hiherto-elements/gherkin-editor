@@ -8,6 +8,11 @@ import '@polymer/app-layout/app-header-layout/app-header-layout.js';
 import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-progress/paper-progress.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '@polymer/iron-icons/iron-icons.js';
+import '@polymer/iron-icons/social-icons.js';
+import '@polymer/paper-button/paper-button.js';
+import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@granite-elements/ace-widget/ace-widget.js'
 
 // gherkin parser
@@ -54,34 +59,38 @@ class GherkinEditorApp extends PolymerElement {
         display: none;
       }
     </style>
-    <app-drawer-layout>
-      <app-drawer slot="drawer">
-        <app-toolbar>Features</app-toolbar>     
-        <ul> 
-        <template is="dom-repeat" items="{{parsedFeature}}"> 
-          <li>{{item.feature}} ({{item.scenarios.length}})</li>
-          <ul>
-          <template is="dom-repeat" items="{{item.scenarios}}" as="scenario">
-              <li>{{scenario.scenario}} ({{scenario.given.length}}/{{scenario.when.length}}/{{scenario.then.length}}) </li>
-          </template>
-          </ul>
-        </template>
-        </ul>
-        
-      </app-drawer>
       <app-header-layout>
         <app-header slot="header" reveals effects="waterfall">
           <app-toolbar>
-            <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-            <div main-title>Gherkin Editor</div>
+            <div main-title>Gherkin Editor</div>           
+            <paper-button>Features {{_countFeatures(parsedFeature)}}</paper-button>
+          <paper-button>Scenarios {{_countScenarios(parsedFeature)}}</paper-button>           
           </app-toolbar>
         </app-header>
         <ace-widget id="editor" placeholder="{{featureText}}" on-editor-content="{{changeContent}}">{{featureText}}</ace-widget>
       </app-header-layout>
-    </app-drawer-layout>
     `;
   }
+
+
+  _countFeatures(parsedFeature) {
+    if (!parsedFeature) {
+      return;
+    }
+    return parsedFeature.length;
+  }
+
+  _countScenarios(parsedFeature) {
     
+    if (!parsedFeature) {
+      return;
+    }
+    const add = (a, b) => a + b;
+    
+    return parsedFeature.map(feature => feature.scenarios.length).reduce(add);
+  }
+
+
   changeFeature() {
     this.parsedFeature = parse(this.featureText);
   }
@@ -89,6 +98,7 @@ class GherkinEditorApp extends PolymerElement {
     return {
       parsedFeature: {
         type: Object,
+        observer: 'changeParsed',
       },
       featureText: {
         type: String,

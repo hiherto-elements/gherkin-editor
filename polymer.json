@@ -5,6 +5,9 @@
       "polymer-3"
     ]
   },
+  "extraDependencies": [
+    "node_modules/ace-builds/src-min-noconflict/theme-eclipse.js"
+  ],
   "builds": [
     {
       "name": "default", 
