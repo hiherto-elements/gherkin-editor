@@ -6,7 +6,8 @@
     ]
   },
   "extraDependencies": [
-    "node_modules/ace-builds/src-min-noconflict/theme-eclipse.js"
+    "node_modules/ace-builds/src-min-noconflict/theme-eclipse.js",
+    "docs/*.md"
   ],
   "builds": [
     {

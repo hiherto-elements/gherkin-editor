@@ -108,14 +108,12 @@ class GherkinEditorApp extends PolymerElement {
   }
 
   changeFeature() {
-    console.log('change', this.featureText)
     this.parsedFeature = parse(this.featureText);
     this.featureStats = stats(this.parsedFeature);
     this.$.editor.value = this.featureText;
   }
 
   _goto(page) {
-    console.log('goto')
     this.page = page;
   }
 
