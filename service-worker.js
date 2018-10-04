@@ -37,7 +37,7 @@
 /* eslint-disable indent, no-unused-vars, no-multiple-empty-lines, max-nested-callbacks, space-before-function-paren, quotes, comma-spacing */
 'use strict';
 
-var precacheConfig = [["index.html","4b02e62602509e259a6c6b8cd50fe205"]];
+var precacheConfig = [["index.html","697f8dc58f93f79548604b4584208c3c"],["src/gherkin-editor-app/gherkin-editor-app.js","eb0c1dfbf60991678343d03ae6493ca0"]];
 var cacheName = 'sw-precache-v3--' + (self.registration ? self.registration.scope : '');
 
 
