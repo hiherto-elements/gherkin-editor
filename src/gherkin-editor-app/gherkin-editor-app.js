@@ -86,7 +86,7 @@ class GherkinEditorApp extends PolymerElement {
               <paper-listbox slot="dropdown-content">
                 <paper-item>Features {{featureStats.features}}</paper-item>
                 <paper-item>Scenarios {{featureStats.scenarios}}</paper-item>
-                <paper-item>Revisions 0</paper-item>
+                <paper-item>Revisions {{revisions.length}}</paper-item>
               </paper-listbox>
             </paper-menu-button>
  
@@ -112,9 +112,14 @@ class GherkinEditorApp extends PolymerElement {
   }
 
   changeFeature() {
-    this.parsedFeature = parse(this.featureText);
-    this.featureStats = stats(this.parsedFeature);
-    this.$.editor.value = this.featureText;
+    try {
+      this.parsedFeature = parse(this.featureText);
+      this.featureStats = stats(this.parsedFeature);
+      this.$.editor.value = this.featureText;
+      this.push('revisions', this.featureText)
+    } catch(e) {
+      console.log(e)
+    }
   }
 
   _goto(page) {
@@ -140,6 +145,11 @@ class GherkinEditorApp extends PolymerElement {
 
   static get properties() {
     return {
+
+      revisions: {
+        type: Array, 
+        value: [],
+      },
       page: {
         type: Number,
         value: 3,
