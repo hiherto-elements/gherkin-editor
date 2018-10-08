@@ -147,8 +147,15 @@ class GherkinEditorApp extends PolymerElement {
                 <paper-item>Time Left: 00:00</paper-item>
               </paper-listbox>
             </paper-menu-button>
-
-            <paper-button id="btnscore" >Score {{featureStats.score}}</paper-button> 
+            <paper-menu-button>
+              <paper-button id="btnscore" slot="dropdown-trigger">Score {{featureStats.score}}</paper-button> 
+              <paper-listbox slot="dropdown-content">
+                <paper-item>Features {{featureStats.features}}</paper-item>
+                <paper-item>Scenarios {{featureStats.scenarios}}</paper-item>
+                <paper-item>Revisions 0</paper-item>
+              </paper-listbox>
+            </paper-menu-button>
+ 
           </app-toolbar>
         </app-header>
         <iron-pages selected="{{page}}">
