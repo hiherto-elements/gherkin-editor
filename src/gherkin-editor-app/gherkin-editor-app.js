@@ -7,6 +7,10 @@ import '@polymer/app-layout/app-header/app-header.js';
 import '@polymer/app-layout/app-header-layout/app-header-layout.js';
 import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
+import '@polymer/paper-item/paper-item.js';
+import '@polymer/paper-listbox/paper-listbox.js';
+import '@polymer/paper-menu-button/paper-menu-button.js';
+
 import '@polymer/paper-progress/paper-progress.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
@@ -103,14 +107,6 @@ class GherkinEditorApp extends PolymerElement {
       this.page = 3;
     });
 
-    this.$.btnshare.addEventListener('click', (event)=>{
-        this.page = 2;
-    });
-    
-    this.$.btntimer.addEventListener('click', (event)=>{
-      this.page = 1;
-    });
-
     this.$.btnhelp.addEventListener('click', (event)=>{
       this.page = 0;
     });
@@ -134,9 +130,24 @@ class GherkinEditorApp extends PolymerElement {
         <app-header slot="header" reveals effects="waterfall">
           <app-toolbar>
             <div main-title>Gherkin Editor</div>
+            <paper-menu-button>
+              <paper-icon-button id="btnshare" name="share" slot="dropdown-trigger" icon="social:share"></paper-icon-button>
+              <paper-listbox slot="dropdown-content">
+                <paper-item>Twitter</paper-item>
+                <paper-item>Save as JSON</paper-item>
+                <paper-item>Print</paper-item>
+              </paper-listbox>
+            </paper-menu-button>
             <paper-icon-button id="btnhelp" name="help" icon="icons:help"></paper-icon-button>
-            <paper-icon-button id="btntimer" name="timer" icon="icons:hourglass-full"></paper-icon-button>
-            <paper-icon-button id="btnshare" name="share" icon="social:share"></paper-icon-button>
+            <paper-menu-button>
+              <paper-icon-button id="btntimer" name="share" slot="dropdown-trigger" icon="icons:hourglass-full"></paper-icon-button>
+              <paper-listbox slot="dropdown-content">
+                <paper-item>Start</paper-item>
+                <paper-item>Stop</paper-item>
+                <paper-item>Time Left: 00:00</paper-item>
+              </paper-listbox>
+            </paper-menu-button>
+
             <paper-button id="btnscore" >Score {{featureStats.score}}</paper-button> 
           </app-toolbar>
         </app-header>
