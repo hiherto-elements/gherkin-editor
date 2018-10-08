@@ -25,75 +25,7 @@ import '@granite-elements/ace-widget/ace-widget.js'
 // gherkin parser
 import { parse } from '@hiherto-elements/gherkin/parse.js'; 
 import { stats } from '@hiherto-elements/gherkin/stats.js';
-
-let DEFAULT_FEATURE = `Feature: History
-As a User of gherkin-editor
-I want to have a edit History
-In order to keep track of changes
-
-Scenario: Store last entry
-Given the user is editing a feature 
-When the feature is changed 
-Then the last entry is stored
-
-Scenario: Display feature history
-Given the user is editing a feature 
-When the feature is changed 
-Then the feature history should show and entry
-
-Scenario: Step to history
-Given the user is editing a feature 
-When the feature is changed 
-Then a new entry should be made into the history
-
-Feature: Save and Load 
-As a User of gherkin-editor
-I want to be able to store feature and History
-In order to keep my changes between Sessions 
-
-Scenario: Store feature
-Given the user is editing a feature 
-When the feature is changed 
-Then the history should be stored
-And Then the feature file should be stored
-
-Scenario: Load feature file 
-Given the user starts the editor
-When the editor is initialized
-Then the last stored feature file is loaded
-
-Feature: Share
-As a User of gherkin-editor
-I want to be able to share the page and my feature 
-In order to be able to communicate with others
-
-Scenario: Share to twitter
-Given the user starts the editor
-When he uses the share function
-Then he is displayed a twitter share button
-
-Feature: Timer 
-As a User of gherkin-editor
-I want to be able to set a Timer
-In order to have a way of focussed working
-
-Scenario: Start timer 
-
-Scenario: Stopt timer 
-
-Scenario: Show histogram with time data 
-
-Feature: Editor
-
-Scenario: Make sound on change 
-
-Scenario: Autosave history and feature 
-
-Scenario: Display outline 
-
-Scenario: Display Test Suite
-
-`;
+import {feature as DEFAULT_FEATURE } from './feature.js';
 
 class GherkinEditorApp extends PolymerElement {
 
@@ -114,11 +46,14 @@ class GherkinEditorApp extends PolymerElement {
 
   static get template() {
     return html`
- <style>
-      app-header {
-        background-color: #00897B;
-        color: #fff;
-      }
+    <style>
+        app-header {
+            color: white;
+            background-color: #ef6c00;
+            --app-header-background-rear-layer: {
+              background-color: #ef6c00;
+            };
+          }
       paper-icon-button {
         --paper-icon-button-ink-color: white;
       }
@@ -133,9 +68,8 @@ class GherkinEditorApp extends PolymerElement {
             <paper-menu-button>
               <paper-icon-button id="btnshare" name="share" slot="dropdown-trigger" icon="social:share"></paper-icon-button>
               <paper-listbox slot="dropdown-content">
-                <paper-item>Twitter</paper-item>
-                <paper-item>Save as JSON</paper-item>
-                <paper-item>Print</paper-item>
+                <paper-item on-click="_downloadJson">Save as JSON</paper-item><a id="download"></a>
+                <paper-item on-click="_downloadText">Save as feature</paper-item>
               </paper-listbox>
             </paper-menu-button>
             <paper-icon-button id="btnhelp" name="help" icon="icons:help"></paper-icon-button>
@@ -186,6 +120,23 @@ class GherkinEditorApp extends PolymerElement {
   _goto(page) {
     this.page = page;
   }
+
+  _downloadJson() {
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.parsedFeature));
+    var dlAnchorElem = this.$.download;
+    dlAnchorElem.setAttribute("href", dataStr);
+    dlAnchorElem.setAttribute("download", "feature.json");
+    dlAnchorElem.click();
+  }
+
+  _downloadText() {
+    var dataStr = "data:text/plain;charset=utf-8," + encodeURIComponent(this.featureText);
+    var dlAnchorElem = this.$.download;
+    dlAnchorElem.setAttribute("href",dataStr);
+    dlAnchorElem.setAttribute("download", "feature.feature");
+    dlAnchorElem.click();
+  }
+
 
   static get properties() {
     return {
