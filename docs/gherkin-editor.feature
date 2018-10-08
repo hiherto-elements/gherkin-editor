@@ -42,16 +42,18 @@ Feature: Share
 Scenario: Share to twitter
 	Given the user starts the editor
 	When he uses the share function
-
-Scenario: Share site to Social Networks
-	As a User of gherkin-editor
-	I want to share the link of the site 
-	So that others can use the tool as well 
+	Then he is displayed a twitter share button
 
 Feature: Timer 
 	As a User of gherkin-editor
 	I want to be able to set a Timer
 	In order to have a way of focussed working
+
+Scenario: Start timer 
+
+Scenario: Stopt timer 
+
+Scenario: Show histogram with time data 
 
 Feature: Editor
 
@@ -62,7 +64,3 @@ Scenario: Autosave history and feature
 Scenario: Display outline 
 
 Scenario: Display Test Suite
-
-
-
-

@@ -134,9 +134,9 @@ class GherkinEditorApp extends PolymerElement {
         <app-header slot="header" reveals effects="waterfall">
           <app-toolbar>
             <div main-title>Gherkin Editor</div>
-            <paper-icon-button id="btnhelp" icon="icons:help"></paper-icon-button>
-            <paper-icon-button id="btntimer" icon="icons:hourglass-full"></paper-icon-button>
-            <paper-icon-button id="btnshare" icon="social:share"></paper-icon-button>
+            <paper-icon-button id="btnhelp" name="help" icon="icons:help"></paper-icon-button>
+            <paper-icon-button id="btntimer" name="timer" icon="icons:hourglass-full"></paper-icon-button>
+            <paper-icon-button id="btnshare" name="share" icon="social:share"></paper-icon-button>
             <paper-button id="btnscore" >Score {{featureStats.score}}</paper-button> 
           </app-toolbar>
         </app-header>
