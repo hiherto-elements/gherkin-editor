@@ -1,0 +1,7 @@
+{
+  "name": "Gherkin Editor",
+  "short_name": "gherkin-editor",
+  "lang": "de-US",
+  "start_url": "/",
+  "display": "standalone"
+}
