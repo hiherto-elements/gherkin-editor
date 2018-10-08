@@ -22,21 +22,73 @@ import '@granite-elements/ace-widget/ace-widget.js'
 import { parse } from '@hiherto-elements/gherkin/parse.js'; 
 import { stats } from '@hiherto-elements/gherkin/stats.js';
 
-let DEFAULT_FEATURE = `Feature: Can drink beer when thirsty
-As a drinker
-I want to take beer off the wall
-In order to satisfy my thirst
+let DEFAULT_FEATURE = `Feature: History
+As a User of gherkin-editor
+I want to have a edit History
+In order to keep track of changes
 
-Scenario: Can take a single beer
-  Given 100 bottles of beer on the wall
-  When a bottle is taken down
-  Then there are 99 bottles of beer on the wall
-  And Then foo
+Scenario: Store last entry
+Given the user is editing a feature 
+When the feature is changed 
+Then the last entry is stored
 
-Scenario: Bar
-  Given 200 Bottles are sold
-  When the Barkeeper deilvers them 
-  Then the Baarkeeper is tired
+Scenario: Display feature history
+Given the user is editing a feature 
+When the feature is changed 
+Then the feature history should show and entry
+
+Scenario: Step to history
+Given the user is editing a feature 
+When the feature is changed 
+Then a new entry should be made into the history
+
+Feature: Save and Load 
+As a User of gherkin-editor
+I want to be able to store feature and History
+In order to keep my changes between Sessions 
+
+Scenario: Store feature
+Given the user is editing a feature 
+When the feature is changed 
+Then the history should be stored
+And Then the feature file should be stored
+
+Scenario: Load feature file 
+Given the user starts the editor
+When the editor is initialized
+Then the last stored feature file is loaded
+
+Feature: Share
+As a User of gherkin-editor
+I want to be able to share the page and my feature 
+In order to be able to communicate with others
+
+Scenario: Share to twitter
+Given the user starts the editor
+When he uses the share function
+Then he is displayed a twitter share button
+
+Feature: Timer 
+As a User of gherkin-editor
+I want to be able to set a Timer
+In order to have a way of focussed working
+
+Scenario: Start timer 
+
+Scenario: Stopt timer 
+
+Scenario: Show histogram with time data 
+
+Feature: Editor
+
+Scenario: Make sound on change 
+
+Scenario: Autosave history and feature 
+
+Scenario: Display outline 
+
+Scenario: Display Test Suite
+
 `;
 
 class GherkinEditorApp extends PolymerElement {
