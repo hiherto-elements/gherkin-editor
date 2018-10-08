@@ -10,7 +10,7 @@ import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-item/paper-item.js';
 import '@polymer/paper-listbox/paper-listbox.js';
 import '@polymer/paper-menu-button/paper-menu-button.js';
-
+import '@polymer/app-storage/app-indexeddb-mirror/app-indexeddb-mirror.js';
 import '@polymer/paper-progress/paper-progress.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
@@ -25,9 +25,57 @@ import '@granite-elements/ace-widget/ace-widget.js'
 // gherkin parser
 import { parse } from '@hiherto-elements/gherkin/parse.js'; 
 import { stats } from '@hiherto-elements/gherkin/stats.js';
+import { diffString, diff, diffString2 } from '@hiherto-elements/diff/diff.js';
 import {feature as DEFAULT_FEATURE } from './feature.js';
 
 class GherkinEditorApp extends PolymerElement {
+
+  static get properties() {
+    return {
+      timeout: {
+        type: Object
+      },
+      interval: {
+        type: Object
+      },
+      timeleft: {
+        type: Number, 
+        value: 0
+      },
+      revisions: {
+        type: Array,
+        notify: true,
+        value: ()=>{
+          return [];
+        }
+      },
+      page: {
+        type: Number,
+        value: 3,
+        notify: true,
+      },
+      parsedFeature: {
+        type: Object,
+      },
+      featureStats: {
+        type: Object,
+        value: ()=>{
+          return {
+        
+          }
+        }
+      },
+      featureText: {
+        type: String,
+        observer: 'changeFeature',
+        notify: true,
+        value: function() {
+          return DEFAULT_FEATURE;
+        }
+      }
+    };
+  }
+
 
   ready() {
     super.ready();
@@ -76,9 +124,8 @@ class GherkinEditorApp extends PolymerElement {
             <paper-menu-button>
               <paper-icon-button id="btntimer" name="share" slot="dropdown-trigger" icon="icons:hourglass-full"></paper-icon-button>
               <paper-listbox slot="dropdown-content">
-                <paper-item>Start</paper-item>
-                <paper-item>Stop</paper-item>
-                <paper-item>Time Left: 00:00</paper-item>
+                <paper-item on-click="_timerStart">Start 15 Minutes</paper-item>
+                <paper-item on-click="_timerStop">Stop</paper-item>
               </paper-listbox>
             </paper-menu-button>
             <paper-menu-button>
@@ -116,7 +163,16 @@ class GherkinEditorApp extends PolymerElement {
       this.parsedFeature = parse(this.featureText);
       this.featureStats = stats(this.parsedFeature);
       this.$.editor.value = this.featureText;
-      this.push('revisions', this.featureText)
+      this.push('revisions', this.featureText);
+
+      let lastRevisionIndex =  this.revisions.length-1;
+      let olderRevisionIndex =  this.revisions.length-2;
+      
+      let last = this.revisions[lastRevisionIndex];
+      let older = this.revisions[olderRevisionIndex]; 
+      if (typeof last !== 'undefined' && typeof older !== 'undefined') {
+        console.log(diffString2(last, older));
+      }
     } catch(e) {
       console.log(e)
     }
@@ -124,6 +180,48 @@ class GherkinEditorApp extends PolymerElement {
 
   _goto(page) {
     this.page = page;
+  }
+
+  _timerStart() {
+    function timer(callback, delay) {
+      var id, started, remaining = delay, running
+  
+      this.start = function() {
+          running = true
+          started = new Date()
+          id = setTimeout(callback, remaining)
+      }
+  
+      this.pause = function() {
+          running = false
+          clearTimeout(id)
+          remaining -= new Date() - started
+      }
+  
+      this.getTimeLeft = function() {
+          if (running) {
+              this.pause()
+              this.start()
+          }
+  
+          return remaining
+      }
+  
+      this.getStateRunning = function() {
+          return running
+      }
+  
+      this.start()
+  }
+
+  this.timeout = new timer(function() {    
+    alert('done');
+  }, 1000*60*15);
+  
+  }
+  _timerStop() {    
+    this.timeout.pause();
+    alert('Stopped');
   }
 
   _downloadJson() {
@@ -140,41 +238,6 @@ class GherkinEditorApp extends PolymerElement {
     dlAnchorElem.setAttribute("href",dataStr);
     dlAnchorElem.setAttribute("download", "feature.feature");
     dlAnchorElem.click();
-  }
-
-
-  static get properties() {
-    return {
-
-      revisions: {
-        type: Array, 
-        value: [],
-      },
-      page: {
-        type: Number,
-        value: 3,
-        notify: true,
-      },
-      parsedFeature: {
-        type: Object,
-      },
-      featureStats: {
-        type: Object,
-        value: ()=>{
-          return {
-        
-          }
-        }
-      },
-      featureText: {
-        type: String,
-        observer: 'changeFeature',
-        notify: true,
-        value: function() {
-          return DEFAULT_FEATURE;
-        }
-      }
-    };
   }
 }
 

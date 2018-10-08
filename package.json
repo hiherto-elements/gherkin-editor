@@ -4,8 +4,10 @@
   "description": "Interactive Gherkin Editor",
   "dependencies": {
     "@granite-elements/ace-widget": "^2.2.7-b1",
+    "@hiherto-elements/diff": "0.0.1",
     "@hiherto-elements/gherkin": "0.0.4",
     "@polymer/app-layout": "^3.0.1",
+    "@polymer/app-storage": "^3.0.2",
     "@polymer/iron-icons": "^3.0.1",
     "@polymer/iron-pages": "^3.0.1",
     "@polymer/marked-element": "^3.0.1",
