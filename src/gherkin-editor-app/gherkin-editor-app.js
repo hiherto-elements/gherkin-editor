@@ -25,7 +25,7 @@ import '@granite-elements/ace-widget/ace-widget.js'
 // gherkin parser
 import { parse } from '@hiherto-elements/gherkin/parse.js'; 
 import { stats } from '@hiherto-elements/gherkin/stats.js';
-import { diffString, diff, diffString2 } from '@hiherto-elements/diff/diff.js';
+import { Diff } from '@hiherto-elements/diff/diff.js';
 import {feature as DEFAULT_FEATURE } from './feature.js';
 
 class GherkinEditorApp extends PolymerElement {
@@ -171,7 +171,9 @@ class GherkinEditorApp extends PolymerElement {
       let last = this.revisions[lastRevisionIndex];
       let older = this.revisions[olderRevisionIndex]; 
       if (typeof last !== 'undefined' && typeof older !== 'undefined') {
-        console.log(diffString2(last, older));
+        let d = new Diff();
+        let res = d.diff(last, older);
+        console.log(res)
       }
     } catch(e) {
       console.log(e)
