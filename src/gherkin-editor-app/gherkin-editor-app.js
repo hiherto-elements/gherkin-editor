@@ -20,7 +20,8 @@ import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/marked-element/marked-element.js';
 import '@polymer/iron-pages/iron-pages.js';
-import '@granite-elements/ace-widget/ace-widget.js'
+import '@granite-elements/ace-widget/ace-widget.js';
+import '@vaadin/vaadin-grid/vaadin-grid.js';
 
 // gherkin parser
 import { parse } from '@hiherto-elements/gherkin/parse.js'; 
@@ -79,16 +80,20 @@ class GherkinEditorApp extends PolymerElement {
 
   ready() {
     super.ready();
-    this.$.editor.addEventListener('editor-content', (event)=>{
-      this.featureText = event.detail.value;
+
+    this.$.btnhelp.addEventListener('click', (event)=>{
+      this.page = 0;
     });
 
     this.$.btnscore.addEventListener('click', (event)=>{
       this.page = 3;
     });
+    this.$.btnvalue.addEventListener('click', (event)=>{
+      this.page = 4;
+    });
 
-    this.$.btnhelp.addEventListener('click', (event)=>{
-      this.page = 0;
+    this.$.editor.addEventListener('editor-content', (event)=>{
+      this.featureText = event.detail.value;
     });
   }
 
@@ -121,6 +126,7 @@ class GherkinEditorApp extends PolymerElement {
               </paper-listbox>
             </paper-menu-button>
             <paper-icon-button id="btnhelp" name="help" icon="icons:help"></paper-icon-button>
+            <paper-icon-button id="btnvalue" name="value" icon="editor:attach-money"></paper-icon-button>
             <paper-menu-button>
               <paper-icon-button id="btntimer" name="share" slot="dropdown-trigger" icon="icons:hourglass-full"></paper-icon-button>
               <paper-listbox slot="dropdown-content">
@@ -148,10 +154,60 @@ class GherkinEditorApp extends PolymerElement {
           </div>
           <div>
             <paper-button>Start Timer</paper-button>
-            
           </div>
           <div>Share</div>
           <ace-widget id="editor" placeholder="{{featureText}}" on-editor-content="{{changeContent}}"></ace-widget>
+          <div>
+          <dom-bind>
+          <template>
+            <!-- Fetch an array of users to be shown in the grid -->
+          
+            <!-- The array is set as the <vaadin-grid>'s "items" property -->
+            <vaadin-grid aria-label="Feature Rating" items="[[users.result]]">
+        
+              <vaadin-grid-column width="60px" flex-grow="0">
+                <template class="header">#</template>
+                <template>[[index]]</template>
+                <!-- If necessary, the footer could be set using <template class="footer"> -->
+                <template class="footer">#</template>
+              </vaadin-grid-column>
+        
+              <vaadin-grid-column>
+                <template class="header">Scenario</template>
+                <template>[[item.firstName]]</template>
+                <template class="footer">Scenario</template>
+              </vaadin-grid-column>
+        
+              <vaadin-grid-column>
+                <template class="header">Feature</template>
+                <template>[[item.lastName]]</template>
+                <template class="footer">Feature</template>
+              </vaadin-grid-column>
+              <vaadin-grid-column>
+                <template class="header">Value</template>
+                <template>[[item.lastName]]</template>
+                <template class="footer">Value</template>
+              </vaadin-grid-column>
+              <vaadin-grid-column>
+                <template class="header">Penalty</template>
+                <template>[[item.lastName]]</template>
+                <template class="footer">Penalty</template>
+              </vaadin-grid-column>
+              <vaadin-grid-column>
+                <template class="header">Effort</template>
+                <template>[[item.lastName]]</template>
+                <template class="footer">Effort</template>
+              </vaadin-grid-column>
+              <vaadin-grid-column>
+                <template class="header">Risk</template>
+                <template>[[item.lastName]]</template>
+                <template class="footer">Risk</template>
+              </vaadin-grid-column>
+            </vaadin-grid>
+          </template>
+        </dom-bind>
+          
+          </div>
         </iron-pages>
         
       </app-header-layout>
