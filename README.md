@@ -4,8 +4,8 @@ Interactive Gherkin Editor
 
 Features: 
 
-* None yet
-* Parses Gherkin
+* Rates the size of your feature
+* Parses Gherkin Syntax
 
 Upcoming: 
 
@@ -19,7 +19,7 @@ Upcoming:
 	* Scaffold Test
 * table support 
 * table editor 
-  * Store
+  * Rate/Estimate the scenarios
 * Achievements 
 
 ## Install the Polymer-CLI
