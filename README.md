@@ -9,6 +9,20 @@ Features:
 
 Upcoming: 
 
+* table estimate editor 
+  * Rate/Estimate the scenarios
+  * add "Estimation" modal window
+    * contains a table 
+    * all scenarios and their features are listed 
+    * Estimates are summed
+    * can be combined with the "score"
+    * estimates are taken for 
+      * Value - Relative value generated once something is shipped
+      * Penalty - What happens if we do not ship this featre 
+      * Effort - That is what "Storypoints" refer to normally
+      * Risk - How Risky is it to do a change/ship a feature
+* better detection of changes
+  * creates less revisions
 * Sync to 
   * github issues
 	* gitlab issues
@@ -18,8 +32,6 @@ Upcoming:
   * zip file
 	* Scaffold Test
 * table support 
-* table editor 
-  * Rate/Estimate the scenarios
 * Achievements 
 
 ## Install the Polymer-CLI
