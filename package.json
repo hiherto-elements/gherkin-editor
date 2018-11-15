@@ -5,7 +5,7 @@
   "dependencies": {
     "@granite-elements/ace-widget": "^2.2.7-b1",
     "@hiherto-elements/diff": "0.0.5",
-    "@hiherto-elements/gherkin": "0.0.6",
+    "@hiherto-elements/gherkin": "0.0.7",
     "@polymer/app-layout": "^3.0.1",
     "@polymer/app-storage": "^3.0.2",
     "@polymer/iron-icons": "^3.0.1",
