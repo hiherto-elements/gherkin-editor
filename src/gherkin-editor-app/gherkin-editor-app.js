@@ -8,6 +8,7 @@ import '@polymer/app-layout/app-header-layout/app-header-layout.js';
 import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-item/paper-item.js';
+import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-listbox/paper-listbox.js';
 import '@polymer/paper-menu-button/paper-menu-button.js';
 import '@polymer/app-storage/app-indexeddb-mirror/app-indexeddb-mirror.js';
@@ -26,6 +27,8 @@ import '@vaadin/vaadin-grid/vaadin-grid.js';
 // gherkin parser
 import { parse } from '@hiherto-elements/gherkin/parse.js'; 
 import { stats } from '@hiherto-elements/gherkin/stats.js';
+import { list } from '@hiherto-elements/gherkin/list.js';
+
 import { Diff } from '@hiherto-elements/diff/diff.js';
 import {feature as DEFAULT_FEATURE } from './feature.js';
 
@@ -57,6 +60,10 @@ class GherkinEditorApp extends PolymerElement {
       },
       parsedFeature: {
         type: Object,
+      },
+      featureList: {
+        type: Array,
+        notify: true
       },
       featureStats: {
         type: Object,
@@ -149,7 +156,7 @@ class GherkinEditorApp extends PolymerElement {
           <div>
             <marked-element>
               <div slot="markdown-html"></div>
-              <script src="./docs/help.md" type="text/markdown"></script>
+              <script src="./docs/help.md" paper-inputtype="text/markdown"></script>
             </marked-element>
           </div>
           <div>
@@ -158,55 +165,57 @@ class GherkinEditorApp extends PolymerElement {
           <div>Share</div>
           <ace-widget id="editor" placeholder="{{featureText}}" on-editor-content="{{changeContent}}"></ace-widget>
           <div>
-          <dom-bind>
-          <template>
-            <!-- Fetch an array of users to be shown in the grid -->
-          
-            <!-- The array is set as the <vaadin-grid>'s "items" property -->
-            <vaadin-grid aria-label="Feature Rating" items="[[users.result]]">
+            <vaadin-grid id="list" aria-label="Feature Rating" items="{{featureList}}">
         
               <vaadin-grid-column width="60px" flex-grow="0">
                 <template class="header">#</template>
                 <template>[[index]]</template>
-                <!-- If necessary, the footer could be set using <template class="footer"> -->
                 <template class="footer">#</template>
               </vaadin-grid-column>
         
-              <vaadin-grid-column>
-                <template class="header">Scenario</template>
-                <template>[[item.firstName]]</template>
+              <vaadin-grid-column>c
+                <template class="header">Senario</template>
+                <template>[[item.scenario]]</template>
                 <template class="footer">Scenario</template>
               </vaadin-grid-column>
         
               <vaadin-grid-column>
                 <template class="header">Feature</template>
-                <template>[[item.lastName]]</template>
+                <template>[[item.feature]]</template>
                 <template class="footer">Feature</template>
               </vaadin-grid-column>
               <vaadin-grid-column>
                 <template class="header">Value</template>
-                <template>[[item.lastName]]</template>
+                <template>
+                  <paper-input class="value" value="[[item.value]]"></paper-input>
+                </template>
                 <template class="footer">Value</template>
               </vaadin-grid-column>
               <vaadin-grid-column>
                 <template class="header">Penalty</template>
-                <template>[[item.lastName]]</template>
+                <template>
+                  <paper-input class="penalty" value="[[item.penalty]]"></paper-input>
+                </template>
                 <template class="footer">Penalty</template>
               </vaadin-grid-column>
-              <vaadin-grid-column>
+              <vaadin-grid-ceffortolumn>
                 <template class="header">Effort</template>
-                <template>[[item.lastName]]</template>
+                <template>
+                  <paper-input class="effort" value="[[item.effort]]"></paper-input>
+                </template>
                 <template class="footer">Effort</template>
               </vaadin-grid-column>
               <vaadin-grid-column>
                 <template class="header">Risk</template>
-                <template>[[item.lastName]]</template>
+                <template>
+                  <paper-input class="effort" value="[[item.risk]]"></paper-input>
+                </template>
                 <template class="footer">Risk</template>
               </vaadin-grid-column>
-            </vaadin-grid>
-          </template>
-        </dom-bind>
-          
+            </vaadin-grid>  <dom-bind>
+          <template>
+        
+  
           </div>
         </iron-pages>
         
@@ -218,7 +227,11 @@ class GherkinEditorApp extends PolymerElement {
     try {
       this.parsedFeature = parse(this.featureText);
       this.featureStats = stats(this.parsedFeature);
+      this.featureList = list(this.parsedFeature);
+
       this.$.editor.value = this.featureText;
+      this.$.list.items = this.featureList;
+      
       this.push('revisions', this.featureText);
 
       let lastRevisionIndex =  this.revisions.length-1;
