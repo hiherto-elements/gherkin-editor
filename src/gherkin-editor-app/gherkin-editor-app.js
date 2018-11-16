@@ -156,7 +156,7 @@ class GherkinEditorApp extends PolymerElement {
           <div>
             <marked-element>
               <div slot="markdown-html"></div>
-              <script src="./docs/help.md" paper-inputtype="text/markdown"></script>
+              <script src="./docs/help.md" type="text/markdown"></script>
             </marked-element>
           </div>
           <div>
