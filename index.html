@@ -4245,69 +4245,25 @@ Scenario: Display outline
 Scenario: Display Test Suite
 
 `;class GherkinEditorNav extends PolymerElement{static get properties(){return{featureStats:{type:Object},parsedFeature:{type:Object},featureText:{type:Object}}}ready(){super.ready();this.$.btnhelp.addEventListener("click",()=>{this.dispatchEvent(new CustomEvent("nav-help"))});this.$.btnscore.addEventListener("click",()=>{this.dispatchEvent(new CustomEvent("nav-score"))});this.$.btnvalue.addEventListener("click",()=>{this.dispatchEvent(new CustomEvent("nav-value"))})}_downloadJson(){var dataStr="data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify(this.parsedFeature)),dlAnchorElem=this.$.download;dlAnchorElem.setAttribute("href",dataStr);dlAnchorElem.setAttribute("download","feature.json");dlAnchorElem.click()}_downloadText(){var dataStr="data:text/plain;charset=utf-8,"+encodeURIComponent(this.featureText),dlAnchorElem=this.$.download;dlAnchorElem.setAttribute("href",dataStr);dlAnchorElem.setAttribute("download","feature.feature");dlAnchorElem.click()}static get template(){return html`
-         <paper-menu-button>
-              <paper-icon-button id="btnshare" name="share" slot="dropdown-trigger" icon="social:share"></paper-icon-button>
-              <paper-listbox slot="dropdown-content">
-                <paper-item on-click="_downloadJson">Save as JSON</paper-item><a id="download"></a>
-                <paper-item on-click="_downloadText">Save as feature</paper-item>
-              </paper-listbox>
+            <paper-menu-button>
+                <paper-icon-button id="btnshare" name="share" slot="dropdown-trigger" icon="social:share"></paper-icon-button>
+                <paper-listbox slot="dropdown-content">
+                    <paper-item on-click="_downloadJson">Save as JSON</paper-item><a id="download"></a>
+                    <paper-item on-click="_downloadText">Save as feature</paper-item>
+                </paper-listbox>
             </paper-menu-button>
             <paper-icon-button id="btnhelp" name="help" icon="icons:help"></paper-icon-button>
             <paper-icon-button id="btnvalue" name="value" icon="editor:attach-money"></paper-icon-button>
             <paper-menu-button>
-              <paper-button id="btnscore" slot="dropdown-trigger">Score {{featureStats.score}}</paper-button> 
-              <paper-listbox slot="dropdown-content">
-                <paper-item>Features {{featureStats.features}}</paper-item>
-                <paper-item>Scenarios {{featureStats.scenarios}}</paper-item>
-                <paper-item>Revisions {{revisions.length}}</paper-item>
-              </paper-listbox>
+                <paper-button id="btnscore" slot="dropdown-trigger">Score {{featureStats.score}}</paper-button> 
+                <paper-listbox slot="dropdown-content">
+                    <paper-item>Features {{featureStats.features}}</paper-item>
+                    <paper-item>Scenarios {{featureStats.scenarios}}</paper-item>
+                    <paper-item>Revisions {{revisions.length}}</paper-item>
+                </paper-listbox>
             </paper-menu-button>
- 
-        `}}window.customElements.define("gherkin-editor-nav",GherkinEditorNav);class GherkinEditorApp extends PolymerElement{static get properties(){return{timeout:{type:Object},interval:{type:Object},timeleft:{type:Number,value:0},revisions:{type:Array,notify:!0,value:()=>{return[]}},page:{type:Number,value:3,notify:!0},parsedFeature:{type:Object},featureList:{type:Array,notify:!0},featureStats:{type:Object,value:()=>{return{}}},featureText:{type:String,observer:"changeFeature",notify:!0,value:function(){return feature}}}}ready(){super.ready();this.$.editor.addEventListener("editor-content",event=>{this.featureText=event.detail.value});this.$.nav.addEventListener("nav-value",()=>{this.page=4});this.$.nav.addEventListener("nav-score",()=>{this.page=3});this.$.nav.addEventListener("nav-help",()=>{this.page=0})}static get template(){return html`
-    <style>
-      app-header-layout  {
-        height: 100%;
-      }
-        app-header {
-            color: white;
-            background-color: #ef6c00;
-            --app-header-background-rear-layer: {
-              background-color: #ef6c00;
-            };
-          }
-      paper-icon-button {
-        --paper-icon-button-ink-color: white;
-      }
-      app-drawer-layout:not([narrow]) [drawer-toggle] {
-        display: none;
-      }
-    </style>
-      <app-header-layout>
-        <app-header slot="header" reveals effects="waterfall">
-          <app-toolbar>
-            <div main-title>Gherkin Editor</div>
-            <gherkin-editor-nav id="nav"
-              feature-stats="[[featureStats]]"
-              parsed-feature="[[parsedFeature]]"
-              feature-text="[[featureText]]"
-              ></gherkin-editor-nav>
-           
-          </app-toolbar>
-        </app-header>
-        <iron-pages selected="{{page}}">
-          <div>
-            <marked-element>
-              <div slot="markdown-html"></div>
-              <script src="./docs/help.md" type="text/markdown"><\/script>
-            </marked-element>
-          </div>
-          <div>
-            <paper-button>Start Timer</paper-button>
-          </div>
-          <div>Share</div>
-          <ace-widget id="editor" placeholder="{{featureText}}" on-editor-content="{{changeContent}}"></ace-widget>
-          <div>
-            <paper-button>Rate</paper-button>
+        `}}window.customElements.define("gherkin-editor-nav",GherkinEditorNav);class GherkinEditorEstimate extends PolymerElement{static get properties(){return{featureList:{type:Array,notify:!0,observer:"_changeFeature"}}}_changeFeature(){this.$.list.items=this.featureList}_randomEstimate(){let fib=[0,.5,1,2,3,5,8,13,20,40,100];return fib[Math.floor(Math.random()*fib.length)]}static get template(){return html`
+        <paper-button>Rate</paper-button></dom-bind>
             <vaadin-grid id="list" aria-label="Feature Rating" items="{{featureList}}">
         
               <vaadin-grid-column width="60px" flex-grow="0">
@@ -4358,12 +4314,55 @@ Scenario: Display Test Suite
                 </template>
                 <template class="footer">Risk</template>
               </vaadin-grid-column>
-            </vaadin-grid>  <dom-bind>
-          <template>
-        
+            </vaadin-grid>  
+        `}}window.customElements.define("gherkin-editor-estimate",GherkinEditorEstimate);class GherkinEditorApp extends PolymerElement{static get properties(){return{timeout:{type:Object},interval:{type:Object},timeleft:{type:Number,value:0},revisions:{type:Array,notify:!0,value:()=>{return[]}},page:{type:Number,value:3,notify:!0},parsedFeature:{type:Object},featureList:{type:Array,notify:!0},featureStats:{type:Object,value:()=>{return{}}},featureText:{type:String,observer:"changeFeature",notify:!0,value:function(){return feature}}}}ready(){super.ready();this.$.editor.addEventListener("editor-content",event=>{this.featureText=event.detail.value});this.$.nav.addEventListener("nav-value",()=>{this.page=4});this.$.nav.addEventListener("nav-score",()=>{this.page=3});this.$.nav.addEventListener("nav-help",()=>{this.page=0})}static get template(){return html`
+    <style>
+      app-header-layout  {
+        height: 100%;
+      }
+        app-header {
+            color: white;
+            background-color: #ef6c00;
+            --app-header-background-rear-layer: {
+              background-color: #ef6c00;
+            };
+          }
+      paper-icon-button {
+        --paper-icon-button-ink-color: white;
+      }
+      app-drawer-layout:not([narrow]) [drawer-toggle] {
+        display: none;
+      }
+    </style>
+      <app-header-layout>
+        <app-header slot="header" reveals effects="waterfall">
+          <app-toolbar>
+            <div main-title>Gherkin Editor</div>
+            <gherkin-editor-nav id="nav"
+              feature-stats="[[featureStats]]"
+              parsed-feature="[[parsedFeature]]"
+              feature-text="[[featureText]]"
+              ></gherkin-editor-nav>
+           
+          </app-toolbar>
+        </app-header>
+        <iron-pages selected="{{page}}">
+          <div>
+            <marked-element>
+              <div slot="markdown-html"></div>
+              <script src="./docs/help.md" type="text/markdown"><\/script>
+            </marked-element>
+          </div>
+          <div>
+            <paper-button>Start Timer</paper-button>
+          </div>
+          <div>Share</div>
+          <ace-widget id="editor" placeholder="{{featureText}}" on-editor-content="{{changeContent}}"></ace-widget>
+          <div>
+            <gherkin-editor-estimate id="estimate"></gherkin-editor-estimate>
   
           </div>
         </iron-pages>
         
       </app-header-layout>
-    `}_randomEstimate(){let fib=[0,.5,1,2,3,5,8,13,20,40,100];return fib[Math.floor(Math.random()*fib.length)]}changeFeature(){try{this.parsedFeature=parse$1(this.featureText);this.featureStats=stats(this.parsedFeature);this.featureList=list(this.parsedFeature);this.$.editor.value=this.featureText;this.$.list.items=this.featureList;this.push("revisions",this.featureText);let lastRevisionIndex=this.revisions.length-1,olderRevisionIndex=this.revisions.length-2,last=this.revisions[lastRevisionIndex],older=this.revisions[olderRevisionIndex];if("undefined"!==typeof last&&"undefined"!==typeof older){let d=new Diff,res=d.diff(last,older);console.log(res)}}catch(e){console.log(e)}}_goto(page){this.page=page}_timerStart(){this.timeout=new function(callback,delay){var id,started,remaining=delay,running;this.start=function(){running=!0;started=new Date;id=setTimeout(callback,remaining)};this.pause=function(){running=!1;clearTimeout(id);remaining-=new Date-started};this.getTimeLeft=function(){if(running){this.pause();this.start()}return remaining};this.getStateRunning=function(){return running};this.start()}(function(){alert("done")},15*(60*1e3))}_timerStop(){this.timeout.pause();alert("Stopped")}_downloadJson(){var dataStr="data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify(this.parsedFeature)),dlAnchorElem=this.$.download;dlAnchorElem.setAttribute("href",dataStr);dlAnchorElem.setAttribute("download","feature.json");dlAnchorElem.click()}_downloadText(){var dataStr="data:text/plain;charset=utf-8,"+encodeURIComponent(this.featureText),dlAnchorElem=this.$.download;dlAnchorElem.setAttribute("href",dataStr);dlAnchorElem.setAttribute("download","feature.feature");dlAnchorElem.click()}}window.customElements.define("gherkin-editor-app",GherkinEditorApp);</script><script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-85700100-5"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date);gtag("config","UA-85700100-5");</script></head><body><custom-style><style is="custom-style">gherkin-editor-app{height:100%;}body{margin:0;height:100%;font-family:'Roboto', 'Noto', sans-serif;background-color:#eee;}</style></custom-style><gherkin-editor-app></gherkin-editor-app></body></html>
+    `}_randomEstimate(){let fib=[0,.5,1,2,3,5,8,13,20,40,100];return fib[Math.floor(Math.random()*fib.length)]}changeFeature(){try{this.parsedFeature=parse$1(this.featureText);this.featureStats=stats(this.parsedFeature);this.featureList=list(this.parsedFeature);this.$.editor.value=this.featureText;this.$.estimate.featureList=this.featureList;this.push("revisions",this.featureText);let lastRevisionIndex=this.revisions.length-1,olderRevisionIndex=this.revisions.length-2,last=this.revisions[lastRevisionIndex],older=this.revisions[olderRevisionIndex];if("undefined"!==typeof last&&"undefined"!==typeof older){let d=new Diff,res=d.diff(last,older);console.log(res)}}catch(e){console.log(e)}}_goto(page){this.page=page}_timerStart(){this.timeout=new function(callback,delay){var id,started,remaining=delay,running;this.start=function(){running=!0;started=new Date;id=setTimeout(callback,remaining)};this.pause=function(){running=!1;clearTimeout(id);remaining-=new Date-started};this.getTimeLeft=function(){if(running){this.pause();this.start()}return remaining};this.getStateRunning=function(){return running};this.start()}(function(){alert("done")},15*(60*1e3))}_timerStop(){this.timeout.pause();alert("Stopped")}_downloadJson(){var dataStr="data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify(this.parsedFeature)),dlAnchorElem=this.$.download;dlAnchorElem.setAttribute("href",dataStr);dlAnchorElem.setAttribute("download","feature.json");dlAnchorElem.click()}_downloadText(){var dataStr="data:text/plain;charset=utf-8,"+encodeURIComponent(this.featureText),dlAnchorElem=this.$.download;dlAnchorElem.setAttribute("href",dataStr);dlAnchorElem.setAttribute("download","feature.feature");dlAnchorElem.click()}}window.customElements.define("gherkin-editor-app",GherkinEditorApp);</script><script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-85700100-5"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date);gtag("config","UA-85700100-5");</script></head><body><custom-style><style is="custom-style">gherkin-editor-app{height:100%;}body{margin:0;height:100%;font-family:'Roboto', 'Noto', sans-serif;background-color:#eee;}</style></custom-style><gherkin-editor-app></gherkin-editor-app></body></html>
