@@ -173,7 +173,7 @@ class GherkinEditorApp extends PolymerElement {
                 <template class="footer">#</template>
               </vaadin-grid-column>
         
-              <vaadin-grid-column>c
+              <vaadin-grid-column>
                 <template class="header">Senario</template>
                 <template>[[item.scenario]]</template>
                 <template class="footer">Scenario</template>
@@ -198,7 +198,7 @@ class GherkinEditorApp extends PolymerElement {
                 </template>
                 <template class="footer">Penalty</template>
               </vaadin-grid-column>
-              <vaadin-grid-ceffortolumn>
+              <vaadin-grid-column>
                 <template class="header">Effort</template>
                 <template>
                   <paper-input class="effort" value="[[item.effort]]"></paper-input>

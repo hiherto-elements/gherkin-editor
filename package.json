@@ -19,7 +19,8 @@
     "@polymer/paper-menu-button": "^3.0.1",
     "@polymer/paper-progress": "^3.0.1",
     "@polymer/polymer": "^3.1.0",
-    "@vaadin/vaadin-grid": "^5.2.3"
+    "@vaadin/vaadin-grid": "^5.2.3",
+    "polymer-cli": "^1.9.2"
   },
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "^2.0.0",
