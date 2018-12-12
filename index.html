@@ -4246,6 +4246,9 @@ Scenario: Display Test Suite
 
 `;class GherkinEditorApp extends PolymerElement{static get properties(){return{timeout:{type:Object},interval:{type:Object},timeleft:{type:Number,value:0},revisions:{type:Array,notify:!0,value:()=>{return[]}},page:{type:Number,value:3,notify:!0},parsedFeature:{type:Object},featureList:{type:Array,notify:!0},featureStats:{type:Object,value:()=>{return{}}},featureText:{type:String,observer:"changeFeature",notify:!0,value:function(){return feature}}}}ready(){super.ready();this.$.btnhelp.addEventListener("click",()=>{this.page=0});this.$.btnscore.addEventListener("click",()=>{this.page=3});this.$.btnvalue.addEventListener("click",()=>{this.page=4});this.$.editor.addEventListener("editor-content",event=>{this.featureText=event.detail.value})}static get template(){return html`
     <style>
+      app-header-layout  {
+        height: 100%;
+      }
         app-header {
             color: white;
             background-color: #ef6c00;
@@ -4304,6 +4307,8 @@ Scenario: Display Test Suite
           <div>Share</div>
           <ace-widget id="editor" placeholder="{{featureText}}" on-editor-content="{{changeContent}}"></ace-widget>
           <div>
+            <paper-button>Rate</paper-button>
+            <paper-button>Clear</paper-button>
             <vaadin-grid id="list" aria-label="Feature Rating" items="{{featureList}}">
         
               <vaadin-grid-column width="60px" flex-grow="0">
@@ -4312,7 +4317,7 @@ Scenario: Display Test Suite
                 <template class="footer">#</template>
               </vaadin-grid-column>
         
-              <vaadin-grid-column>
+              <vaadin-grid-column width="200px">
                 <template class="header">Senario</template>
                 <template>[[item.scenario]]</template>
                 <template class="footer">Scenario</template>
@@ -4326,28 +4331,28 @@ Scenario: Display Test Suite
               <vaadin-grid-column>
                 <template class="header">Value</template>
                 <template>
-                  <paper-input class="value" value="[[item.value]]"></paper-input>
+                  <paper-input class="value" value="[[_randomEstimate()]]"></paper-input>
                 </template>
                 <template class="footer">Value</template>
               </vaadin-grid-column>
               <vaadin-grid-column>
                 <template class="header">Penalty</template>
                 <template>
-                  <paper-input class="penalty" value="[[item.penalty]]"></paper-input>
+                  <paper-input class="penalty" value="[[_randomEstimate()]]"></paper-input>
                 </template>
                 <template class="footer">Penalty</template>
               </vaadin-grid-column>
               <vaadin-grid-column>
                 <template class="header">Effort</template>
                 <template>
-                  <paper-input class="effort" value="[[item.effort]]"></paper-input>
+                  <paper-input class="effort" value="[[_randomEstimate()]]"></paper-input>
                 </template>
                 <template class="footer">Effort</template>
               </vaadin-grid-column>
               <vaadin-grid-column>
                 <template class="header">Risk</template>
                 <template>
-                  <paper-input class="effort" value="[[item.risk]]"></paper-input>
+                  <paper-input class="effort" value="[[_randomEstimate()]]"></paper-input>
                 </template>
                 <template class="footer">Risk</template>
               </vaadin-grid-column>
@@ -4359,4 +4364,4 @@ Scenario: Display Test Suite
         </iron-pages>
         
       </app-header-layout>
-    `}changeFeature(){try{this.parsedFeature=parse$1(this.featureText);this.featureStats=stats(this.parsedFeature);this.featureList=list(this.parsedFeature);this.$.editor.value=this.featureText;this.$.list.items=this.featureList;this.push("revisions",this.featureText);let lastRevisionIndex=this.revisions.length-1,olderRevisionIndex=this.revisions.length-2,last=this.revisions[lastRevisionIndex],older=this.revisions[olderRevisionIndex];if("undefined"!==typeof last&&"undefined"!==typeof older){let d=new Diff,res=d.diff(last,older);console.log(res)}}catch(e){console.log(e)}}_goto(page){this.page=page}_timerStart(){this.timeout=new function(callback,delay){var id,started,remaining=delay,running;this.start=function(){running=!0;started=new Date;id=setTimeout(callback,remaining)};this.pause=function(){running=!1;clearTimeout(id);remaining-=new Date-started};this.getTimeLeft=function(){if(running){this.pause();this.start()}return remaining};this.getStateRunning=function(){return running};this.start()}(function(){alert("done")},15*(60*1e3))}_timerStop(){this.timeout.pause();alert("Stopped")}_downloadJson(){var dataStr="data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify(this.parsedFeature)),dlAnchorElem=this.$.download;dlAnchorElem.setAttribute("href",dataStr);dlAnchorElem.setAttribute("download","feature.json");dlAnchorElem.click()}_downloadText(){var dataStr="data:text/plain;charset=utf-8,"+encodeURIComponent(this.featureText),dlAnchorElem=this.$.download;dlAnchorElem.setAttribute("href",dataStr);dlAnchorElem.setAttribute("download","feature.feature");dlAnchorElem.click()}}window.customElements.define("gherkin-editor-app",GherkinEditorApp);</script><script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-85700100-5"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date);gtag("config","UA-85700100-5");</script></head><body><custom-style><style is="custom-style">body{margin:0;height:100%;font-family:'Roboto', 'Noto', sans-serif;background-color:#eee;}</style></custom-style><gherkin-editor-app></gherkin-editor-app></body></html>
+    `}_randomEstimate(){let fib=[0,.5,1,2,3,5,8,13,20,40,100];return fib[Math.floor(Math.random()*fib.length)]}changeFeature(){try{this.parsedFeature=parse$1(this.featureText);this.featureStats=stats(this.parsedFeature);this.featureList=list(this.parsedFeature);this.$.editor.value=this.featureText;this.$.list.items=this.featureList;this.push("revisions",this.featureText);let lastRevisionIndex=this.revisions.length-1,olderRevisionIndex=this.revisions.length-2,last=this.revisions[lastRevisionIndex],older=this.revisions[olderRevisionIndex];if("undefined"!==typeof last&&"undefined"!==typeof older){let d=new Diff,res=d.diff(last,older);console.log(res)}}catch(e){console.log(e)}}_goto(page){this.page=page}_timerStart(){this.timeout=new function(callback,delay){var id,started,remaining=delay,running;this.start=function(){running=!0;started=new Date;id=setTimeout(callback,remaining)};this.pause=function(){running=!1;clearTimeout(id);remaining-=new Date-started};this.getTimeLeft=function(){if(running){this.pause();this.start()}return remaining};this.getStateRunning=function(){return running};this.start()}(function(){alert("done")},15*(60*1e3))}_timerStop(){this.timeout.pause();alert("Stopped")}_downloadJson(){var dataStr="data:text/json;charset=utf-8,"+encodeURIComponent(JSON.stringify(this.parsedFeature)),dlAnchorElem=this.$.download;dlAnchorElem.setAttribute("href",dataStr);dlAnchorElem.setAttribute("download","feature.json");dlAnchorElem.click()}_downloadText(){var dataStr="data:text/plain;charset=utf-8,"+encodeURIComponent(this.featureText),dlAnchorElem=this.$.download;dlAnchorElem.setAttribute("href",dataStr);dlAnchorElem.setAttribute("download","feature.feature");dlAnchorElem.click()}}window.customElements.define("gherkin-editor-app",GherkinEditorApp);</script><script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-85700100-5"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date);gtag("config","UA-85700100-5");</script></head><body><custom-style><style is="custom-style">gherkin-editor-app{height:100%;}body{margin:0;height:100%;font-family:'Roboto', 'Noto', sans-serif;background-color:#eee;}</style></custom-style><gherkin-editor-app></gherkin-editor-app></body></html>
