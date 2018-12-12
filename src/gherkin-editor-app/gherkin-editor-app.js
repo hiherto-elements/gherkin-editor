@@ -33,6 +33,8 @@ import { Diff } from '@hiherto-elements/diff/diff.js';
 import {feature as DEFAULT_FEATURE } from './feature.js';
 
 import './gherkin-editor-nav.js';
+import './gherkin-editor-estimate.js';
+
 
 class GherkinEditorApp extends PolymerElement {
 
@@ -153,60 +155,7 @@ class GherkinEditorApp extends PolymerElement {
           <div>Share</div>
           <ace-widget id="editor" placeholder="{{featureText}}" on-editor-content="{{changeContent}}"></ace-widget>
           <div>
-            <paper-button>Rate</paper-button>
-            <vaadin-grid id="list" aria-label="Feature Rating" items="{{featureList}}">
-        
-              <vaadin-grid-column width="60px" flex-grow="0">
-                <template class="header">#</template>
-                <template>[[index]]</template>
-                <template class="footer">#</template>
-              </vaadin-grid-column>
-        
-              <vaadin-grid-column width="200px">
-                <template class="header">Senario</template>
-                <template>[[item.scenario]]</template>
-                <template class="footer">Scenario</template>
-              </vaadin-grid-column>
-        
-              <vaadin-grid-column>
-                <template class="header">Feature</template>
-                <template>[[item.feature]]</template>   </gherkin-editor-nav>
-            <paper-menu-button>
-              <paper-icon-button id="btnshare" name="share" slot="dropdown-trigger" icon="social:share"></paper-icon-button>
-           
-                <template class="footer">Feature</template>
-              </vaadin-grid-column>
-              <vaadin-grid-column>
-                <template class="header">Value</template>
-                <template>
-                  <paper-input class="value" value="[[_randomEstimate()]]"></paper-input>
-                </template>
-                <template class="footer">Value</template>
-              </vaadin-grid-column>
-              <vaadin-grid-column>
-                <template class="header">Penalty</template>
-                <template>
-                  <paper-input class="penalty" value="[[_randomEstimate()]]"></paper-input>
-                </template>
-                <template class="footer">Penalty</template>
-              </vaadin-grid-column>
-              <vaadin-grid-column>
-                <template class="header">Effort</template>
-                <template>
-                  <paper-input class="effort" value="[[_randomEstimate()]]"></paper-input>
-                </template>
-                <template class="footer">Effort</template>
-              </vaadin-grid-column>
-              <vaadin-grid-column>
-                <template class="header">Risk</template>
-                <template>
-                  <paper-input class="effort" value="[[_randomEstimate()]]"></paper-input>
-                </template>
-                <template class="footer">Risk</template>
-              </vaadin-grid-column>
-            </vaadin-grid>  <dom-bind>
-          <template>
-        
+            <gherkin-editor-estimate id="estimate"></gherkin-editor-estimate>
   
           </div>
         </iron-pages>
@@ -226,7 +175,8 @@ class GherkinEditorApp extends PolymerElement {
       this.featureList = list(this.parsedFeature);
 
       this.$.editor.value = this.featureText;
-      this.$.list.items = this.featureList;
+      this.$.estimate.featureList = this.featureList;
+      
       
       this.push('revisions', this.featureText);
 
