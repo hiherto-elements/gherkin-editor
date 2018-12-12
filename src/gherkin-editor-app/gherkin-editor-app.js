@@ -32,6 +32,8 @@ import { list } from '@hiherto-elements/gherkin/list.js';
 import { Diff } from '@hiherto-elements/diff/diff.js';
 import {feature as DEFAULT_FEATURE } from './feature.js';
 
+import './gherkin-editor-nav.js';
+
 class GherkinEditorApp extends PolymerElement {
 
   static get properties() {
@@ -44,7 +46,7 @@ class GherkinEditorApp extends PolymerElement {
       },
       timeleft: {
         type: Number, 
-        value: 0
+        value: 0,
       },
       revisions: {
         type: Array,
@@ -87,21 +89,23 @@ class GherkinEditorApp extends PolymerElement {
 
   ready() {
     super.ready();
-
-    this.$.btnhelp.addEventListener('click', (event)=>{
-      this.page = 0;
-    });
-
-    this.$.btnscore.addEventListener('click', (event)=>{
-      this.page = 3;
-    });
-    this.$.btnvalue.addEventListener('click', (event)=>{
-      this.page = 4;
-    });
-
+    
     this.$.editor.addEventListener('editor-content', (event)=>{
       this.featureText = event.detail.value;
     });
+
+    this.$.nav.addEventListener('nav-value', (event)=>{
+      this.page = 4;
+    });
+
+    this.$.nav.addEventListener('nav-score', (event)=>{
+      this.page = 3;
+    });
+
+    this.$.nav.addEventListener('nav-help', (event)=>{
+      this.page = 0;
+    });
+
   }
 
   static get template() {
@@ -128,31 +132,12 @@ class GherkinEditorApp extends PolymerElement {
         <app-header slot="header" reveals effects="waterfall">
           <app-toolbar>
             <div main-title>Gherkin Editor</div>
-            <paper-menu-button>
-              <paper-icon-button id="btnshare" name="share" slot="dropdown-trigger" icon="social:share"></paper-icon-button>
-              <paper-listbox slot="dropdown-content">
-                <paper-item on-click="_downloadJson">Save as JSON</paper-item><a id="download"></a>
-                <paper-item on-click="_downloadText">Save as feature</paper-item>
-              </paper-listbox>
-            </paper-menu-button>
-            <paper-icon-button id="btnhelp" name="help" icon="icons:help"></paper-icon-button>
-            <paper-icon-button id="btnvalue" name="value" icon="editor:attach-money"></paper-icon-button>
-            <paper-menu-button>
-              <paper-icon-button id="btntimer" name="share" slot="dropdown-trigger" icon="icons:hourglass-full"></paper-icon-button>
-              <paper-listbox slot="dropdown-content">
-                <paper-item on-click="_timerStart">Start 15 Minutes</paper-item>
-                <paper-item on-click="_timerStop">Stop</paper-item>
-              </paper-listbox>
-            </paper-menu-button>
-            <paper-menu-button>
-              <paper-button id="btnscore" slot="dropdown-trigger">Score {{featureStats.score}}</paper-button> 
-              <paper-listbox slot="dropdown-content">
-                <paper-item>Features {{featureStats.features}}</paper-item>
-                <paper-item>Scenarios {{featureStats.scenarios}}</paper-item>
-                <paper-item>Revisions {{revisions.length}}</paper-item>
-              </paper-listbox>
-            </paper-menu-button>
- 
+            <gherkin-editor-nav id="nav"
+              feature-stats="[[featureStats]]"
+              parsed-feature="[[parsedFeature]]"
+              feature-text="[[featureText]]"
+              ></gherkin-editor-nav>
+           
           </app-toolbar>
         </app-header>
         <iron-pages selected="{{page}}">
@@ -169,7 +154,6 @@ class GherkinEditorApp extends PolymerElement {
           <ace-widget id="editor" placeholder="{{featureText}}" on-editor-content="{{changeContent}}"></ace-widget>
           <div>
             <paper-button>Rate</paper-button>
-            <paper-button>Clear</paper-button>
             <vaadin-grid id="list" aria-label="Feature Rating" items="{{featureList}}">
         
               <vaadin-grid-column width="60px" flex-grow="0">
@@ -186,7 +170,10 @@ class GherkinEditorApp extends PolymerElement {
         
               <vaadin-grid-column>
                 <template class="header">Feature</template>
-                <template>[[item.feature]]</template>
+                <template>[[item.feature]]</template>   </gherkin-editor-nav>
+            <paper-menu-button>
+              <paper-icon-button id="btnshare" name="share" slot="dropdown-trigger" icon="social:share"></paper-icon-button>
+           
                 <template class="footer">Feature</template>
               </vaadin-grid-column>
               <vaadin-grid-column>
